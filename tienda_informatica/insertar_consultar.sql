@@ -31,12 +31,6 @@ INSERT INTO productos VALUES(11, 'Impresora HP Laserjet Pro M26nw', 180, 3);
 SELECT * from productos;
 
 --  ejercicios
--- consulta de join. El fabricantes ¿cuantos productos tiene?
-SELECT f.nombre as nombre, count(p.nombre) as total_articulos
-from fabricante f 
-inner JOIN productos p on f.id = p.id_fabricante
-GROUP BY f.nombre
-ORDER BY total_articulos DESC;
 -- Lista los nombres y los precios de todos los productos de la tabla productos.
 DESCRIBE productos;
 SELECT nombre, precio from productos;
@@ -83,3 +77,46 @@ WHERE nombre LIKE '____'; -- cada_ es un caracter
 SELECT *from fabricante
 WHERE char_length(nombre) =4;
 
+-- ejercicios multitablas 
+-- consulta de join. El fabricantes ¿cuantos productos tiene?
+DESCRIBE productos;
+DESCRIBE fabricante;
+SELECT f.nombre as nombre, count(p.nombre) as total_articulos
+from fabricante f 
+inner JOIN productos p on f.id = p.id_fabricante
+GROUP BY f.nombre
+ORDER BY total_articulos DESC;
+
+-- Devuelve una lista con el nombre del producto, precio y nombre de fabricante de todos los productos de la base de datos.
+-- Ordene el resultado por el nombre del fabricante, por orden alfabético
+SELECT p.nombre as nombre_producto, p.precio as precio_producto, f.nombre as nombre_fabricante
+from productos p
+ join fabricante f on
+p.id_fabricante = f.id
+ORDER BY nombre_fabricante ASC;
+
+-- devuelve nombre del producto, precio y nombre de fabricante de todos los productos de la base de datos el producto más caro.
+SELECT p.nombre, p.precio , f.nombre as nombre_fabricante
+from productos p
+INNER JOIN fabricante f
+on p.id_fabricante = f.id
+ORDER BY  p.precio DESC;
+-- Devuelve una lista de todos los productos del fabricante Lenovo.
+SELECT f.nombre as fabricante_lenovo, p.nombre as productos_lenovo
+from  fabricante f
+INNER JOIN  productos p
+on  f.id = p.id_fabricante
+WHERE f.id = "2";
+
+-- Devuelve una lista de todos los productos del fabricante Crucial que tengan un precio mayor que 200€.
+SELECT f.nombre, p.nombre as producto
+from fabricante  f
+INNER JOIN productos p
+on  f.id = p.id_fabricante
+WHERE f.id ="6" and p.precio>200;
+-- Devuelve un listado con todos los productos de los fabricantes Asus, Hewlett-Packard y Seagate
+SELECT*FROM productos;
+SELECT*FROM  fabricante;
+
+DESCRIBE productos;
+DESCRIBE fabricante;
