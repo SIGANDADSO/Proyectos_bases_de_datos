@@ -115,8 +115,21 @@ INNER JOIN productos p
 on  f.id = p.id_fabricante
 WHERE f.id ="6" and p.precio>200;
 -- Devuelve un listado con todos los productos de los fabricantes Asus, Hewlett-Packard y Seagate
+SELECT f.nombre, p.nombre as producto
+from fabricante f
+INNER JOIN productos p 
+on f.id = p.id_fabricante
+WHERE f.nombre IN('Asus', 'Hewlett-Packard', 'Seagate');
+
+--  Devuelve un listado con el nombre y el precio de todos los productos de los fabricantes cuyo nombre termine por la vocal e.
 SELECT*FROM productos;
 SELECT*FROM  fabricante;
 
 DESCRIBE productos;
 DESCRIBE fabricante;
+
+SELECT f.nombre, p.precio 
+from fabricante f
+INNER JOIN productos p 
+on f.id = p.id_fabricante
+WHERE f.nombre LIKE '%e'
