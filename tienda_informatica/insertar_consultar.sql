@@ -122,14 +122,50 @@ on f.id = p.id_fabricante
 WHERE f.nombre IN('Asus', 'Hewlett-Packard', 'Seagate');
 
 --  Devuelve un listado con el nombre y el precio de todos los productos de los fabricantes cuyo nombre termine por la vocal e.
-SELECT*FROM productos;
-SELECT*FROM  fabricante;
-
-DESCRIBE productos;
-DESCRIBE fabricante;
 
 SELECT f.nombre, p.precio 
 from fabricante f
 INNER JOIN productos p 
 on f.id = p.id_fabricante
-WHERE f.nombre LIKE '%e'
+WHERE f.nombre LIKE '%e';
+
+-- Devuelve un listado con el nombre y el precio de todos los productos cuyo nombre de fabricante contengan el carácter w en su nombre.
+SELECT f.nombre, p.precio
+FROM productos p
+INNER join fabricante f 
+on f.id = p.id_fabricante
+WHERE f.nombre LIKE '%w%';
+
+--  Devuelve un listado con el nombre de producto, precio y nombre de fabricante, de todos los productos
+-- que tengan un precio mayor o igual a 180€. Ordene el resultado en primer lugar por el precio (en orden
+-- descendente) y ensegundo lugar por el nombre(en orden ascendente) 
+
+SELECT p.nombre as nombre_producto, p.precio, f.nombre
+FROM productos p
+INNER join fabricante f 
+on p.id_fabricante = f.id
+where p.precio >=180
+ORDER BY p.precio DESC, f.nombre ASC;
+
+-- Consultas multitabla(Composición externa)
+
+-- Devuelve un listado de todos los fabricantes que existen en la base de datos,junto con los productos que
+-- tiene cada uno de ellos.El listado deberá mostrar también aquellos fabricantes que no tienen productos asociados.
+SELECT * FROM productos;
+SELECT f.nombre as nombre_fabricante , p.nombre as nombre_producto
+FROM fabricante f
+LEFT join productos p 
+on f.id = p.id_fabricante;
+-- Devuelve un listado donde sólo aparezcan aquellos fabricantes que no tienen ningún producto asociado.
+SELECT f.nombre as nombre_fabricante , p.nombre as nombre_producto
+FROM fabricante f
+LEFT join productos p 
+on f.id = p.id_fabricante
+WHERE  p.nombre is NULL;
+-- 3. ¿Pueden existir productos que no estén relacionados con un fabricante? Justifique su respuesta.
+-- rta/no existen productos sin fabricante asociado en esta base de datos.
+SELECT p.*
+FROM productos p
+LEFT JOIN fabricante f ON p.id_fabricante = f.id
+WHERE f.id IS NULL;
+
