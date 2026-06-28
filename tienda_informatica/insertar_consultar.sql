@@ -169,3 +169,56 @@ FROM productos p
 LEFT JOIN fabricante f ON p.id_fabricante = f.id
 WHERE f.id IS NULL;
 
+-- consultas resumen
+
+ -- Calcula el número total de productos que hay en la tabla productos
+ select COUNT(nombre) as total_productos from productos;
+ -- Calcula el número total de fabricantes que hay en la tabla fabricante.
+ SELECT COUNT(nombre) as total_fabricantes 
+ FROM fabricante;
+--  Calcula el número de valores distintos de identificador de fabricante aparecen en la tabla productos.
+SELECT COUNT(DISTINCT id_fabricante) 
+FROM productos;
+--  Calcula la media del precio de todos los productos.
+SELECT round(AVG(precio), 3) from productos;
+-- Calcula el precio más barato de todos los productos
+SELECT *FROM productos
+WHERE precio =(SELECT MIN(precio) FROM productos);
+-- Calcula el precio más caro de todos los productos.
+SELECT *FROM productos
+WHERE precio =(SELECT MAX(precio) FROM productos);
+--  Calcula la suma de los precios de todos los productos.
+SELECT SUM(precio) from productos;
+--  Calcula el número de productos que tiene el fabricante Asus.
+SELECT f.nombre, count(p.id) as total_productos
+FROM productos p 
+INNER JOIN fabricante f 
+on f.id = p.id_fabricante
+WHERE f.id ='1'
+GROUP BY f.nombre;
+--  Calcula la media del precio de todos los productos del fabricante Asus
+SELECT avg(precio) from productos
+WHERE id_fabricante ='1';
+-- Calcula el precio más barato de todos los productos del fabricante Asus
+SELECT nombre, precio FROM productos
+WHERE precio = (SELECT min(precio) from productos
+                 WHERE id_fabricante ='1' );
+--  Calcula el precio más caro de todos los productos del fabricante Asus.
+SELECT nombre, precio FROM productos
+WHERE precio = (SELECT MAX(precio) from productos
+                 WHERE id_fabricante ='1' );
+-- Calcula la suma de todos los productos del fabricante Asus.
+SELECT f.nombre, SUM(p.precio) as total
+FROM fabricante f
+INNER JOIN productos p
+on f.id =p.id_fabricante
+WHERE p.id_fabricante ="1"
+GROUP BY f.nombre;
+-- Muestra el precio máximo, precio mínimo, diferencia de precio, precio medio y el número total de productos que tiene el fabricante Crucial.
+SELECT f.nombre, MAX(p.precio) as precio_maximo, MIN(p.precio) as precio_minimo,
+      MAX(p.precio)-MIN(p.precio) as diferencia_precio, AVG(p.precio) as precio_medio, COUNT(id_fabricante) as total_productos
+       FROM productos p
+       INNER join fabricante f 
+       on f.id =p.id_fabricante
+       WHERE p.id_fabricante ="6"
+       GROUP BY f.nombre;
